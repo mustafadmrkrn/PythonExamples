@@ -5,5 +5,3 @@ cevre = 2 * pi * r
 
 print("alan:",alan)
 print("Çevre:",cevre)
-
-
