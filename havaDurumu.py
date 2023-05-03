@@ -7,7 +7,7 @@ API_KEY = "YOUR_API_KEY"
 
 def get_weather(city):
     # API request URL
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={84d69356-e8ba-11ed-8b7f-0242ac130002-84d693c4-e8ba-11ed-8b7f-0242ac130002}&units=metric"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
     response = urllib.request.urlopen(url)
     data = json.loads(response.read().decode())
     # Extract weather data

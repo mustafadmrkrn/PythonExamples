@@ -2,7 +2,7 @@
 import re
 import urllib.request
 
-url = "https://www.havadurumu15gunluk.net/havadurumu/istanbul-hava-durumu-15-gunluk.html"
+url = input("https://www.havadurumu15gunluk.net/havadurumu/istanbul-hava-durumu-15-gunluk.html")
 site = urllib.request.urlopen(url).read().decode('utf-8')
 
 r_gunduz = '<td width="45">&nbsp;&nbsp;(-?\d+)°C</td>'

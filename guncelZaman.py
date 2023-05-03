@@ -34,3 +34,4 @@ while True:
         tarih: {}/{}/{}
         saat : {}:{}:{}
         """.format(gun, ay, yil, saat, dakika, saniye))
+    break
