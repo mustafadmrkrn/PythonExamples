@@ -7,6 +7,7 @@ baglanti = sqlite3.connect("uyelik_veritabani.db")
 # Cursor (imleç) oluşturun
 cursor = baglanti.cursor()
 
+
 # Kullanıcılar tablosunu oluşturun
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS kullanicilar (
@@ -136,6 +137,17 @@ def ac_uye_ol():
         adres = adres_entry.get()
         telefon = telefon_entry.get()
         email = email_entry.get()
+
+        # Telefon doğrulama işlemi
+        if not telefon.isdigit():
+            messagebox.showerror("Hata", "Telefon numarası sadece sayılardan oluşmalıdır.")
+            return
+
+        # Email doğrulama işlemi
+        email_formati = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        if not re.match(email_formati, email):
+            messagebox.showerror("Hata", "Geçerli bir email adresi giriniz.")
+            return
 
         uyelik_sistemi.kullanici_ekle(kullanici_adi, sifre, ad, soyad, adres, telefon, email)
 
