@@ -1,0 +1,27 @@
+﻿from tkinter import *
+from tkinter import messagebox 
+pencere = Tk()
+pencere.geometry("255x140")
+pencere.title("Data Write")
+def kaydet():
+	dosyaAdi = adEntry.get()
+	dosya = open(dosyaAdi +  ".txt", mode="a")
+	veri = veriEntry.get()
+	dosya.write(veri + "\n") 
+	dosya.close()
+	messagebox.showinfo("Md Cooparation", "Veri yazma işlemi başarılı.")
+	veriEntry.delete(0, END)
+	
+veriYazFrame = LabelFrame (text="Dosyaya Veri Yazma", width=235, height=125)
+veriYazFrame.place(x=10, y=10)
+adEtiket = Label (veriYazFrame, text="Dosya Adı:")
+adEtiket.place(x=10, y=10)
+adEntry = Entry (veriYazFrame)
+adEntry.place(x=100, y=10)
+veriEtiket = Label (veriYazFrame, text="Veriler:")
+veriEtiket.place(x=10, y=40)
+veriEntry = Entry (veriYazFrame)
+veriEntry.place(x=100, y=40)
+btnKaydet = Button (veriYazFrame, text="Kaydet", command=kaydet) 
+btnKaydet.place (x=170, y=70, width=50)
+pencere.mainloop()
