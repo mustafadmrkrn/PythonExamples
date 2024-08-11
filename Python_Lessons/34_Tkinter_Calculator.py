@@ -17,7 +17,7 @@ def fark():
         sonucEtiket["text"] = "Sonuç: Fark:" + str(sonuc)
     except ValueError:
         sonucEtiket["text"] = "Geçersiz giriş!"
-
+vis
 def carp():
     try:
         sayi1 = int(sayi1Entry.get())
