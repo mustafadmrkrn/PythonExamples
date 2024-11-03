@@ -2,24 +2,27 @@
 from tkinter import messagebox
 
 pencere = Tk()
-pencere.geometry("240x140")
+pencere.geometry("400x300")
 pencere.title("Ortalama Hesabı")
 
 def hesapla():
-    not1 = int(sinav1Entry.get())
-    not2 = int(sinav2Entry.get())
-    ortalama = (not1 + not2) / 2
-    if ortalama < 45:
-        durum = "Başarısız"
-    elif ortalama < 55:
-        durum = "Geçer"
-    elif ortalama < 70:
-        durum = "Orta"
-    elif ortalama < 85:
-        durum = "İyi"
-    else:
-        durum = "Pekiyi"
-    messagebox.showinfo("Sınıf geçme durumu", f"Ortalamanız: {ortalama}\nDurum: {durum}")
+    try:
+        not1 = int(sinav1Entry.get())
+        not2 = int(sinav2Entry.get())
+        ortalama = (not1 + not2) / 2
+        if ortalama < 45:
+            durum = "Başarısız"
+        elif ortalama < 55:
+            durum = "Geçer"
+        elif ortalama < 70:
+            durum = "Orta"
+        elif ortalama < 85:
+            durum = "İyi"
+        else:
+            durum = "Pekiyi"
+        messagebox.showinfo("Sınıf geçme durumu", f"Ortalamanız: {ortalama}\nDurum: {durum}")
+    except ValueError:
+        messagebox.showerror("Hata", "Lütfen geçerli bir sayı girin!")
 
 hesapFrame = LabelFrame(pencere, text="Ders Geçme Notu Hesapla", width=220, height=120)
 hesapFrame.place(x=10, y=10)

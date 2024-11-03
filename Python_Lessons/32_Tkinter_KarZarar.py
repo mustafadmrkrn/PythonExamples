@@ -1,43 +1,47 @@
 ﻿from tkinter import *
+from tkinter import messagebox
+
+pencere = Tk()
+pencere.geometry("300x150")  # Slightly larger to fit all elements on macOS
+pencere.title("Ortalama Hesabı")
 
 def hesapla():
     try:
-        alis_fiyati = float(alisFiyatiEntry.get())
-        kilogram = float(kiloEntry.get())
-        kar_orani = float(karOraniEntry.get())
-
-        satis_fiyati = alis_fiyati * (1 + kar_orani / 100)
-        kar_miktari = (satis_fiyati - alis_fiyati) * kilogram
-
-        sonucLabel.config(text=f"Toplam Kar: {kar_miktari:.2f} TL")
+        not1 = int(sinav1Entry.get())
+        not2 = int(sinav2Entry.get())
+        ortalama = (not1 + not2) / 2
+        if ortalama < 45:
+            durum = "Başarısız"
+        elif ortalama < 55:
+            durum = "Geçer"
+        elif ortalama < 70:
+            durum = "Orta"
+        elif ortalama < 85:
+            durum = "İyi"
+        else:
+            durum = "Pekiyi"
+        messagebox.showinfo("Sınıf geçme durumu", f"Ortalamanız: {ortalama}\nDurum: {durum}")
     except ValueError:
-        sonucLabel.config(text="Lütfen geçerli sayılar girin!")
+        messagebox.showerror("Hata", "Lütfen geçerli bir sayı girin!")
 
-pencere = Tk()
-pencere.title("Kar Hesaplama")
+# Creating the frame
+hesapFrame = LabelFrame(pencere, text="Ders Geçme Notu Hesapla", padx=10, pady=10)
+hesapFrame.pack(padx=10, pady=10)
 
-frame = Frame(pencere)
-frame.pack(padx=10, pady=10)
+# Sınav 1 label and entry
+sinav1Etiket = Label(hesapFrame, text="1. sınav")
+sinav1Etiket.grid(row=0, column=0, padx=5, pady=5)
+sinav1Entry = Entry(hesapFrame)
+sinav1Entry.grid(row=0, column=1, padx=5, pady=5)
 
-alisFiyatiLabel = Label(frame, text="Alış Fiyatı (TL):")
-alisFiyatiLabel.grid(row=0, column=0, padx=5, pady=5)
-alisFiyatiEntry = Entry(frame)
-alisFiyatiEntry.grid(row=0, column=1, padx=5, pady=5)
+# Sınav 2 label and entry
+sinav2Etiket = Label(hesapFrame, text="2. sınav")
+sinav2Etiket.grid(row=1, column=0, padx=5, pady=5)
+sinav2Entry = Entry(hesapFrame)
+sinav2Entry.grid(row=1, column=1, padx=5, pady=5)
 
-kiloLabel = Label(frame, text="Kaç Kilogram:")
-kiloLabel.grid(row=1, column=0, padx=5, pady=5)
-kiloEntry = Entry(frame)
-kiloEntry.grid(row=1, column=1, padx=5, pady=5)
-
-karOraniLabel = Label(frame, text="Kar Oranı (%):")
-karOraniLabel.grid(row=2, column=0, padx=5, pady=5)
-karOraniEntry = Entry(frame)
-karOraniEntry.grid(row=2, column=1, padx=5, pady=5)
-
-hesaplaButton = Button(frame, text="Hesapla", command=hesapla)
-hesaplaButton.grid(row=3, columnspan=2, padx=5, pady=5)
-
-sonucLabel = Label(frame, text="Sonuç")
-sonucLabel.grid(row=4, columnspan=2, padx=5, pady=5)
+# Hesapla button
+btnHesapla = Button(hesapFrame, text="Hesapla", command=hesapla)
+btnHesapla.grid(row=2, columnspan=2, pady=10)
 
 pencere.mainloop()
