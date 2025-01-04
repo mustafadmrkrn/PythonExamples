@@ -16,6 +16,19 @@ def kaydet():
     else:
         messagebox.showwarning("Uyarı", "Lütfen tüm alanları doldurunuz!")
 
+def uyari():
+    cevap = messagebox.askyesnocancel("Uyarı", "Tüm bilgileriniz silinecek!")
+    if cevap == True:
+        sonuc["text"]="Evet'e Tıkladınız"
+    elif cevap == False:
+        sonuc["text"] = "Hayır'a Tıkladınız"
+    else:
+        sonuc["text"] = "İptal'e Tıkladınız."
+     
+
+sonuc = Label(text="Butona Tıklamadınız")
+sonuc.pack()
+
 # Pencere ayarları
 pencere = Tk()
 pencere.geometry("400x400")

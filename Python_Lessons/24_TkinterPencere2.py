@@ -1,7 +1,7 @@
 ﻿from tkinter import *
 
 pencere = Tk()
-pencere.geometry("300x400")
+pencere.geometry("500x400")
 pencere.title("Bahçeşehir Kolej")
 
 def yaz():
