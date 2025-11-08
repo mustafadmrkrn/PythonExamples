@@ -1,42 +1,32 @@
-import wave
-import numpy as np
+import whisper
 import pyttsx3
-import deepspeech
 import asyncio
-import torchpip install pyttsx3
+import torch
 from transformers import AlbertForQuestionAnswering, AlbertTokenizer
 from rasa.core.agent import Agent
 
-# DeepSpeech Model Yolu
-DS_MODEL = "deepspeech-0.9.3-models.pbmm"
-DS_SCORER = "deepspeech-0.9.3-models.scorer"
+# Whisper modeli yükleniyor
+whisper_model = whisper.load_model("base")
 
-# ALBERT Modeli
+# ALBERT modeli
 tokenizer = AlbertTokenizer.from_pretrained("albert-base-v2")
 albert_model = AlbertForQuestionAnswering.from_pretrained("albert-base-v2")
 
-# pyttsx3 Sesli Yanıt
+# pyttsx3: Sesli yanıt verme
 def speak(text):
     engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
 
-# DeepSpeech: Sesi yazıya çevir
+# Whisper: Sesi metne çevir
 def transcribe_audio(audio_path):
-    model = deepspeech.Model(DS_MODEL)
-    model.enableExternalScorer(DS_SCORER)
+    result = whisper_model.transcribe(audio_path, language="tr")
+    return result["text"]
 
-    with wave.open(audio_path, 'rb') as wf:
-        frames = wf.readframes(wf.getnframes())
-        audio = np.frombuffer(frames, dtype=np.int16)
-        result = model.stt(audio)
-        return result
-
-# ALBERT ile yanıt üret (örnek amaçlı basit context ile)
+# ALBERT ile yanıt üret (örnek context ile)
 def albert_answer(question, context="Bu sistem yapay zeka destekli bir asistandır."):
     inputs = tokenizer(question, context, return_tensors="pt")
     outputs = albert_model(**inputs)
-
     start_idx = torch.argmax(outputs.start_logits)
     end_idx = torch.argmax(outputs.end_logits) + 1
     tokens = inputs["input_ids"][0][start_idx:end_idx]
@@ -45,17 +35,16 @@ def albert_answer(question, context="Bu sistem yapay zeka destekli bir asistand�
 
 # RASA: Diyalog yönetimi
 async def rasa_response(text):
-    agent = Agent.load("models/")  # Eğitilmiş RASA modeli gerektirir
+    agent = Agent.load("models/")  # Eğitilmiş bir RASA modeli gerektirir
     responses = await agent.handle_text(text)
     return responses[0]['text'] if responses else "Anlayamadım."
 
-# Ana fonksiyon
+# Ana asistan fonksiyonu
 def run_assistant(audio_path):
     print("Sesi metne çeviriyor...")
     user_input = transcribe_audio(audio_path)
     print(f"Kullanıcı dedi ki: {user_input}")
 
-    # Önce RASA ile deneyelim
     try:
         rasa_reply = asyncio.run(rasa_response(user_input))
     except:
@@ -70,6 +59,6 @@ def run_assistant(audio_path):
     print("Asistan:", response)
     speak(response)
 
-# Örnek test
-if __name__ == "__main__":  # Fixed the incorrect name check
-    run_assistant("test.wav")  # test.wav = kullanıcının sesi
+# Test
+if __name__ == "__main__":
+    run_assistant("test.wav")
