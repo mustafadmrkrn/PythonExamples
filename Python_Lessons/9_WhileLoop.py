@@ -1,12 +1,5 @@
 ﻿sayi = 1
-while sayi <= 5:
+while sayi >= 0:
   print(sayi)
-  sayi +=1
+  sayi +=100
 
-while True:
-  sayi = int(input("Lütfen bir sayı giriniz:"))
-  if sayi % 2 == 0:
-    print ("Girilen sayı çift sayıdır.")
-  else:
-    print ("Girilen sayı tek sayıdır.")
-    break
