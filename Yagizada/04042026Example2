@@ -1,0 +1,130 @@
+import tkinter as tk
+import random
+from tkinter import messagebox
+
+class SayiTahminOyunu:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("2 Kişilik Sayı Tahmin Oyunu")
+        self.root.geometry("450x350")
+        self.root.config(bg="#f0f4f8")
+
+        # Oyun Değişkenleri
+        self.rastgele_sayi = random.randint(1, 100)
+        self.sira = 1 # 1: 1. Oyuncu, 2: 2. Oyuncu
+        self.sayac_p1 = 0
+        self.sayac_p2 = 0
+
+        # --- ARAYÜZ (GUI) TASARIMI ---
+        self.baslik_label = tk.Label(root, text="Sayı Tahmin Oyununa Hoş Geldiniz!", font=("Helvetica", 14, "bold"), bg="#f0f4f8", fg="#333")
+        self.baslik_label.pack(pady=15)
+
+        self.bilgi_label = tk.Label(root, text="1 ile 100 arasında bir sayı tuttum. Sırayla tahmin edin!", font=("Helvetica", 10), bg="#f0f4f8", fg="#555")
+        self.bilgi_label.pack()
+
+        # Sıra Göstergesi
+        self.sira_label = tk.Label(root, text="Sıra: 1. Oyuncu", font=("Helvetica", 12, "bold"), fg="#0056b3", bg="#f0f4f8")
+        self.sira_label.pack(pady=15)
+
+        # Tahmin Giriş Kutusu
+        self.tahmin_entry = tk.Entry(root, font=("Helvetica", 14), width=10, justify="center")
+        self.tahmin_entry.pack(pady=5)
+        self.tahmin_entry.focus() # Program açılınca imleci direkt buraya koy
+        
+        # Klavyeden Enter tuşuna basıldığında da tahmin etsin
+        self.root.bind('<Return>', lambda event: self.tahmin_et())
+
+        # Tahmin Et Butonu
+        self.tahmin_buton = tk.Button(root, text="Tahmin Et", font=("Helvetica", 12, "bold"), command=self.tahmin_et, bg="#28a745", fg="white", cursor="hand2", padx=10)
+        self.tahmin_buton.pack(pady=10)
+
+        # Sonuç/Yönlendirme Mesajı
+        self.sonuc_label = tk.Label(root, text="", font=("Helvetica", 11, "italic"), bg="#f0f4f8")
+        self.sonuc_label.pack(pady=10)
+
+        # Yeniden Oyna Butonu (Başlangıçta kapalı)
+        self.yeniden_buton = tk.Button(root, text="Yeniden Oyna", font=("Helvetica", 10), command=self.yeni_oyun, state=tk.DISABLED, cursor="hand2")
+        self.yeniden_buton.pack(pady=5)
+
+    def tahmin_et(self):
+        # Kullanıcının girdiği değeri al
+        giris = self.tahmin_entry.get()
+        
+        # Boş veya geçersiz (harf vb.) giriş kontrolü
+        try:
+            tahmin = int(giris)
+        except ValueError:
+            messagebox.showwarning("Geçersiz Giriş", "Lütfen sadece sayı giriniz!")
+            self.tahmin_entry.delete(0, tk.END)
+            return
+
+        # Sayı aralığı kontrolü
+        if tahmin < 1 or tahmin > 100:
+            messagebox.showwarning("Geçersiz Giriş", "Lütfen 1 ile 100 arasında bir sayı giriniz!")
+            self.tahmin_entry.delete(0, tk.END)
+            return
+
+        self.tahmin_entry.delete(0, tk.END) # Giriş kutusunu temizle
+
+        # Hangi oyuncudayız? Sayacı artır ve bilgileri ayarla.
+        if self.sira == 1:
+            self.sayac_p1 += 1
+            guncel_sayac = self.sayac_p1
+            oyuncu_adi = "1. Oyuncu"
+        else:
+            self.sayac_p2 += 1
+            guncel_sayac = self.sayac_p2
+            oyuncu_adi = "2. Oyuncu"
+
+        # Tahmin Kontrol Mekanizması
+        if tahmin > self.rastgele_sayi:
+            self.sonuc_label.config(text=f"{oyuncu_adi} ({tahmin}): Lütfen daha KÜÇÜK bir sayı giriniz.", fg="#d9534f")
+            self.sira_degistir()
+            
+        elif tahmin < self.rastgele_sayi:
+            self.sonuc_label.config(text=f"{oyuncu_adi} ({tahmin}): Lütfen daha BÜYÜK bir sayı giriniz.", fg="#d9534f")
+            self.sira_degistir()
+            
+        else:
+            # Doğru Tahmin
+            kazanma_metni = f"🎉 TEBRİKLER {oyuncu_adi}! 🎉\nSayı: {self.rastgele_sayi}\nToplam {guncel_sayac}. tahmininizde bildiniz."
+            self.sonuc_label.config(text=kazanma_metni, fg="#28a745", font=("Helvetica", 12, "bold"))
+            self.oyun_bitti()
+
+    def sira_degistir(self):
+        # Sırayı diğer oyuncuya geçir ve renkleri değiştir
+        if self.sira == 1:
+            self.sira = 2
+            self.sira_label.config(text="Sıra: 2. Oyuncu", fg="#6f42c1") # 2. Oyuncu için mor renk
+        else:
+            self.sira = 1
+            self.sira_label.config(text="Sıra: 1. Oyuncu", fg="#0056b3") # 1. Oyuncu için mavi renk
+
+    def oyun_bitti(self):
+        # Oyun bitince girişleri kapat, yeniden oyna butonunu aç
+        self.tahmin_buton.config(state=tk.DISABLED)
+        self.tahmin_entry.config(state=tk.DISABLED)
+        self.yeniden_buton.config(state=tk.NORMAL)
+        self.sira_label.config(text="Oyun Bitti!", fg="#333")
+
+    def yeni_oyun(self):
+        # Değişkenleri sıfırla
+        self.rastgele_sayi = random.randint(1, 100)
+        self.sira = 1
+        self.sayac_p1 = 0
+        self.sayac_p2 = 0
+        
+        # Arayüzü sıfırla
+        self.sira_label.config(text="Sıra: 1. Oyuncu", fg="#0056b3")
+        self.sonuc_label.config(text="")
+        self.tahmin_entry.config(state=tk.NORMAL)
+        self.tahmin_entry.delete(0, tk.END)
+        self.tahmin_buton.config(state=tk.NORMAL)
+        self.yeniden_buton.config(state=tk.DISABLED)
+        self.tahmin_entry.focus()
+
+# Uygulamayı Başlatma
+if __name__ == "__main__":
+    pencere = tk.Tk()
+    uygulama = SayiTahminOyunu(pencere)
+    pencere.mainloop()
