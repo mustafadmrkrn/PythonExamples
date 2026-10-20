@@ -12,4 +12,4 @@ print(replace)
 
 ad = input("Adınızı giriniz: ")
 soyad = input("Soyadınızı giriniz: ")
-print("Adınız: " + ad + " Soyadınız: " + soyad)
+print(ad + " " + soyad)
