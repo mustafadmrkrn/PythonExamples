@@ -1,11 +1,11 @@
 ﻿from tkinter import *
 
 pencere = Tk()
-pencere.geometry("500x400")
-pencere.title("Bahçeşehir Kolej")
+pencere.geometry("700x300")
+pencere.title("Yusuf Emir Not Defteri")
 
 def yaz():
-    etiket["text"] = "Bahçeşehir Kodluyor"
+    etiket["text"] = "İlk Not Alındı"
 
 buton = Button(pencere, text="Tıkla", command=yaz)
 buton.pack()

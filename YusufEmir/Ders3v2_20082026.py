@@ -15,7 +15,7 @@ elif ortalama >= 50 and ortalama < 70:
     print("Orta.")
 elif ortalama >= 70 and ortalama < 85:
     print("İyi.")
-elif ortalama >= 85 and ortalama < 100:
+elif ortalama >= 85 and ortalama <= 100:
     print("Çok iyi.")
 else:
     print("Geçersiz not girdiniz.")

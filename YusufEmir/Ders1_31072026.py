@@ -1,6 +1,6 @@
 print("Merhaba Dünya")
 
-a = "Mustafa"
+a = "Mustafa35"
 print(type(a))
 b = 35
 print(type(b))
